@@ -1,0 +1,12 @@
+data:
+  source: "Darejkal/phomt_partial"
+
+model:
+  max_token_length: 1024
+  prefix: "translate English to Vietnamese: "
+  ignore_index: -100
+  cache_dir: "../cache"
+
+logging:
+  test_answer_prefix: "test_answer"
+  log_ext: ".txt"

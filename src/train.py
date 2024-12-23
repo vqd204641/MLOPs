@@ -1,18 +1,20 @@
-# Constant variables
-MAX_TOKEN_LENGTH = 1024
-PHOMT_PREFIX = "translate English to Vietnamese: {text}"
-DATA_SOURCE = "Darejkal/phomt_partial"
-CACHE_DIR = "cache"
-OUT_FOLDER = "out"
-IGNORE_INDEX = -100
-RESPONSE_OUTFILE = "test_answers.txt"
+from config import DATA_CONFIG, MODEL_CONFIG, LOGGING_CONFIG
+from utils import log
+
+MAX_TOKEN_LENGTH = MODEL_CONFIG["max_token_length"]
+PHOMT_PREFIX = MODEL_CONFIG["prefix"] + "{text}"
+DATA_SOURCE = DATA_CONFIG["source"]
+CACHE_DIR = MODEL_CONFIG["cache_dir"]
+IGNORE_INDEX = MODEL_CONFIG["ignore_index"]
+TEST_ANSWER_PREFIX = LOGGING_CONFIG["test_answer_prefix"]
+LOG_EXT = LOGGING_CONFIG["log_ext"]
+TEST_ANSWER_FILE = log.create_log_filename(TEST_ANSWER_PREFIX, LOG_EXT)
 
 # Download dataset
 from datasets import load_dataset
 
 data = load_dataset(
     path=DATA_SOURCE,
-    num_proc=2,
     verification_mode="no_checks",
     cache_dir=CACHE_DIR
 )
@@ -20,8 +22,8 @@ data = load_dataset(
 finetune_data = data['train']
 eval_data = data['test']
 
-finetune_data = finetune_data.select(range(500))
-eval_data = eval_data.select(range(10))
+finetune_data = finetune_data.select(range(3))
+eval_data = eval_data.select(range(3))
 
 print(finetune_data)
 print(eval_data)
@@ -42,8 +44,8 @@ def preprocess_function(examples):
     model_inputs = custom_tokenize(text=inputs, text_target=answers)
     return model_inputs
 
-tokenized_train_datasets = finetune_data.map(preprocess_function, batched=True, num_proc=2)
-tokenized_eval_datasets = eval_data.map(preprocess_function, batched=True, num_proc=2)
+tokenized_train_datasets = finetune_data.map(preprocess_function, batched=True)
+tokenized_eval_datasets = eval_data.map(preprocess_function, batched=True)
 
 print(tokenized_train_datasets)
 print(tokenized_eval_datasets)
@@ -151,7 +153,7 @@ import datasets
 random_eval_ds = eval_data
 index = 0
 
-writer = open(RESPONSE_OUTFILE, "w", encoding="utf-8")
+writer = open(TEST_ANSWER_FILE, "w", encoding="utf-8")
 
 while index < len(random_eval_ds):
     next = min(index + 4, len(random_eval_ds))
@@ -170,21 +172,21 @@ import json
 
 references = random_eval_ds['vi']
 predictions = [
-    line.strip() for line in open(RESPONSE_OUTFILE, "r", encoding="utf-8").readlines()
+    line.strip() for line in open(TEST_ANSWER_FILE, "r", encoding="utf-8").readlines()
 ]
 
 sacrebleu = evaluate.load("sacrebleu")
 results = sacrebleu.compute(predictions=predictions, references=references)
 print(results)
 
-with open(RESPONSE_OUTFILE+"_blue","w") as f:
+with open(TEST_ANSWER_FILE+"_blue","w") as f:
     f.write(json.dumps(results))
 
 rougue = evaluate.load("rouge")
 results = rougue.compute(predictions=predictions, references=references)
 print(results)
 
-with open(RESPONSE_OUTFILE+"_rougue","w") as f:
+with open(TEST_ANSWER_FILE+"_rougue","w") as f:
     f.write(json.dumps(results))
 
 # Save model locally

@@ -5,3 +5,6 @@ transformers
 evaluate
 sacrebleu
 rouge_score
+pyyaml
+protobuf
+accelerate
