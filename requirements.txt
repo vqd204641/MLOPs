@@ -1,0 +1,10 @@
+torch
+datasets
+sentencepiece
+transformers
+evaluate
+sacrebleu
+rouge_score
+pyyaml
+protobuf
+accelerate
