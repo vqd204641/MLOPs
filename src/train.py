@@ -6,7 +6,7 @@ import pickle
 import os
 
 # Cấu hình
-MODEL_PATH = "models/linear_model.pkl"
+MODEL_PATH = "MLOPs/models/linear_model.pkl"
 
 # Tạo dữ liệu ngẫu nhiên
 X = np.random.rand(100, 1)  # 100 mẫu, mỗi mẫu có 1 đặc trưng

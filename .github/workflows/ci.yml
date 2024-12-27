@@ -4,11 +4,14 @@ on:
   push:
     branches:
       - main
+      - diffrent_modle  # Hoặc nhánh bạn đang làm việc trên
   pull_request:
-
+    branches:
+      - main  # Hoặc nhánh bạn đang làm việc trên
+      - diffrent_modle
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     # Kiểm tra code từ repository
@@ -40,4 +43,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: trained_model
-        path: /content/saved_model/
+        path: models/
