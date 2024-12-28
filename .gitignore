@@ -1,4 +1,5 @@
-cache
+venv/
+cache 
 src/cache
 src/__pycache__
 src/utils/__pycache__

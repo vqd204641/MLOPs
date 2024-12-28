@@ -11,7 +11,7 @@ on:
       - diffirent_model
 jobs:
   build:
-    runs-on: ubuntu-latest #windows-latest
+    runs-on: windows-latest
 
     steps:
     # Kiểm tra code từ repository
