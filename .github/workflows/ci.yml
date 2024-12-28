@@ -4,14 +4,14 @@ on:
   push:
     branches:
       - main
-      - diffrent_modle  # Hoặc nhánh bạn đang làm việc trên
+      - diffrent_model  # Hoặc nhánh bạn đang làm việc trên
   pull_request:
     branches:
       - main  # Hoặc nhánh bạn đang làm việc trên
-      - diffrent_modle
+      - diffrent_model
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest #windows-latest
 
     steps:
     # Kiểm tra code từ repository
