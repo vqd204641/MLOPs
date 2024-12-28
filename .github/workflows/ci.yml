@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      - diffrent_model  # Hoặc nhánh bạn đang làm việc trên
+      - diffirent_model  # Hoặc nhánh bạn đang làm việc trên
   pull_request:
     branches:
       - main  # Hoặc nhánh bạn đang làm việc trên
-      - diffrent_model
+      - diffirent_model
 jobs:
   build:
     runs-on: ubuntu-latest #windows-latest
