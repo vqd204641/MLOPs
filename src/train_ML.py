@@ -193,5 +193,5 @@ with open(TEST_ANSWER_FILE+"_rougue","w") as f:
 trainer.save_model("/content/saved_model/")
 
 # Push model to HuggingFace
-access_token = "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"
+access_token = ""
 model.push_to_hub("h9art/MLOps-toy-mt5", token=access_token)
